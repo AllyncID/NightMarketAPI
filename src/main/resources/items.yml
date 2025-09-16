@@ -1,0 +1,409 @@
+# ---------------------------------------------------------------- #
+#                  NightMarket Items Configuration                 #
+# ---------------------------------------------------------------- #
+# Author: allync
+#
+# NEW FEATURE: ITEM DISCOUNTS
+# - 'discount': An optional section to add a sale on an item.
+#   - 'chance': The probability (e.g., 25.0 for 25%) that this item will be discounted for a player.
+#   - 'percentage': The discount amount (e.g., 50.0 for 50% off).
+#
+# STOCK SYSTEM:
+# - 'stock': The total server-wide quantity of this item available
+#   during the current market cycle. Once depleted, it cannot be purchased.
+# - Use 'stock: -1' for unlimited stock.
+#
+# LORE PLACEHOLDERS:
+# %price_placeholder% - Dynamically replaced with the normal price or a discounted price (with strikethrough).
+# %stock% - Displays the remaining stock of the item.
+# %player% - The player's name (for commands).
+# ---------------------------------------------------------------- #
+
+price-placeholders:
+  normal: "&ePrice: &6%final_price%"
+  discounted: "&ePrice: &m%original_price%&r &a%final_price%"
+
+# ---------------------------------------------------------------- #
+#                      NightMarket Reroll Item                     #
+# ---------------------------------------------------------------- #
+# When right-clicked, this item rerolls a player's market selection
+# for the current cycle. It is consumed upon use.
+# This is a global item and is not part of the random item pool below.
+# It is typically given to players via another plugin or command.
+reroll-item:
+  enabled: true
+  display:
+    material: "ECHO_SHARD"
+    name: "&5Market Reroll"
+    lore:
+      - "&7Right-click to reroll your items"
+      - "&7in the Night Market."
+      - ""
+      - "&cConsumed on use!"
+    custom_model_data: 0
+    enchanted: true # set to true for a glowing effect
+  success_effects:
+    title: "&5&lRerolled!"
+    subtitle: "&7Your market items have been refreshed."
+    sound:
+      name: "BLOCK_AMETHYST_BLOCK_CHIME"
+      volume: 1.0
+      pitch: 1.2
+
+# The main list of all possible items for the Night Market.
+# The keys (e.g., 'common_pickaxe', 'magic_dust') MUST be unique for each item.
+items:
+  common_pickaxe:
+    chance: 100.0
+    price: 50.0
+    stock: -1 # Unlimited
+    discount:
+      chance: 40.0   # 40% chance for this item to be on sale
+      percentage: 50.0 # 50% off
+    display_item:
+      material: "IRON_PICKAXE"
+      name: "&7Sturdy Pickaxe"
+      lore:
+        - "&fA reliable tool for any miner."
+        - ""
+        - "&ePrice: &6%price_placeholder%"
+        - "&7Stock: &a%stock%"
+    commands_on_click:
+      - "give %player% iron_pickaxe 1"
+      - "tell %player% &eYou received a Sturdy Pickaxe!"
+
+  # Only players with the permission 'nightmarket.item.vip' can see and buy this item.
+  # 'invert: false' means the permission must be present.
+  vip_exclusive_sword:
+    chance: 20.0
+    price: 1000.0
+    stock: 1 # Very limited
+    permission:
+      node: "nightmarket.item.vip"
+      invert: false
+    display_item:
+      material: "DIAMOND_SWORD"
+      name: "&bVIP Exclusive Sword"
+      lore:
+        - "&fA special sword for our VIPs."
+        - ""
+        - "%price_placeholder%"
+        - "&7Stock Remaining: &c%stock%"
+    commands_on_click:
+      - "give %player% diamond_sword{Enchantments:[{id:\"minecraft:sharpness\",lvl:5s}]} 1"
+
+  # This item can be bought by everyone EXCEPT those who have the 'nightmarket.pro' permission.
+  # 'invert: true' reverses the logic: if you have the permission, you cannot buy it.
+  # Useful for giving starter aid items to new players.
+  starter_kit_bundle:
+    chance: 80.0
+    price: 50.0
+    stock: 1
+    permission:
+      node: "nightmarket.pro"
+      invert: true
+    display_item:
+      material: "CHEST"
+      name: "&aBeginner's Aid Bundle"
+      lore:
+        - "&fA few items to start your adventure."
+        - "&cNot available for Pro players."
+        - ""
+        - "%price_placeholder%"
+        - "&7Stock Remaining: &a%stock%"
+    commands_on_click:
+      - "give %player% stone_sword 1"
+      - "give %player% leather_helmet 1"
+      - "give %player% cooked_beef 16"
+
+  lump_of_coal:
+    chance: 120.0 # Very common
+    price: 20.0
+    stock: -1 # Unlimited
+    discount:
+      chance: 25.0
+      percentage: 75.0 # A very steep discount for coal
+    display_item:
+      material: "COAL"
+      name: "&8Lump of Coal"
+      lore:
+        - "&7Perhaps better luck next time."
+        - ""
+        - "&ePrice: &6%price_placeholder%"
+        - "&7Stock: &a%stock%"
+    commands_on_click:
+      - "give %player% coal 1"
+
+  magic_dust:
+    chance: 90.0
+    price: 10.0
+    stock: -1 # Unlimited
+    display_item:
+      material: "GLOWSTONE_DUST"
+      name: "&dMagic Dust"
+      lore:
+        - "&fSprinkle for good luck."
+        - ""
+        - "&ePrice: &6%price_placeholder%"
+        - "&7Stock: &a%stock%"
+    commands_on_click:
+      - "tell %player% &dYou feel... dusty."
+
+  cooked_beef_bunch:
+    chance: 110.0 # Common
+    price: 30.0
+    stock: -1 # Unlimited
+    discount:
+      chance: 50.0
+      percentage: 20.0
+    display_item:
+      material: "COOKED_BEEF"
+      name: "&cHearty Steak (x8)"
+      lore:
+        - "&fAn excellent source of energy."
+        - ""
+        - "&ePrice: &6%price_placeholder%"
+        - "&7Stock: &a%stock%"
+    commands_on_click:
+      - "give %player% cooked_beef 8"
+      - "tell %player% &aYou received some steak!"
+
+  iron_ingots_stack:
+    chance: 100.0 # Common
+    price: 60.0
+    stock: -1 # Unlimited
+    display_item:
+      material: "IRON_INGOT"
+      name: "&fIron Ingots (x5)"
+      lore:
+        - "&7Essential for crafting."
+        - ""
+        - "&ePrice: &6%price_placeholder%"
+        - "&7Stock: &a%stock%"
+    commands_on_click:
+      - "give %player% iron_ingot 5"
+
+  oak_logs_bundle:
+    chance: 115.0 # Common
+    price: 25.0
+    stock: -1 # Unlimited
+    display_item:
+      material: "OAK_LOG"
+      name: "&6Bundle of Oak Logs (x16)"
+      lore:
+        - "&7The foundation of any great build."
+        - ""
+        - "&ePrice: &6%price_placeholder%"
+        - "&7Stock: &a%stock%"
+    commands_on_click:
+      - "give %player% oak_log 16"
+
+  speed_potion:
+    chance: 75.0
+    price: 75.0
+    stock: 50
+    discount:
+      chance: 15.0
+      percentage: 33.0
+    display_item:
+      material: "POTION"
+      name: "&bPotion of Swiftness"
+      lore:
+        - "&7Run like the wind!"
+        - ""
+        - "&ePrice: &6%price_placeholder%"
+        - "&7Stock: &e%stock% remaining"
+    commands_on_click:
+      - "give %player% potion{Potion:\"minecraft:swiftness\"} 1"
+      - "tell %player% &bYou feel faster!"
+
+  golden_apple:
+    chance: 50.0 # Less common
+    price: 200.0
+    stock: 25
+    display_item:
+      material: "GOLDEN_APPLE"
+      name: "&6Golden Apple"
+      lore:
+        - "&7A shiny, life-saving fruit."
+        - ""
+        - "&ePrice: &6%price_placeholder%"
+        - "&7Stock: &e%stock% remaining"
+    commands_on_click:
+      - "give %player% golden_apple 1"
+
+  shiny_diamond:
+    chance: 60.0
+    price: 100.0
+    stock: 30
+    display_item:
+      material: "DIAMOND"
+      name: "&bShiny Diamond (x3)"
+      lore:
+        - "&7A rare, sparkling gem."
+        - ""
+        - "&ePrice: &6%price_placeholder%"
+        - "&7Stock: &e%stock% remaining"
+    commands_on_click:
+      - "give %player% diamond 3"
+
+  elytra:
+    chance: 10.0 # Rare
+    price: 1000.0
+    stock: 5
+    discount:
+      chance: 5.0    # A rare chance for a rare discount
+      percentage: 25.0 # 25% off
+    display_item:
+      material: "ELYTRA"
+      name: "&fWings of Freedom"
+      lore:
+        - "&7Soar through the skies."
+        - ""
+        - "&ePrice: &6%price_placeholder%"
+        - "&7Stock: &c%stock% remaining"
+      enchantments:
+        UNBREAKING: 2
+    commands_on_click:
+      - "give %player% elytra{Enchantments:[{id:\"minecraft:unbreaking\",lvl:2s}]} 1"
+
+  nether_star:
+    chance: 5.0 # Very Rare
+    price: 2000.0
+    stock: 2
+    display_item:
+      material: "NETHER_STAR"
+      name: "&5Nether Star"
+      lore:
+        - "&7Power from the depths of the Nether."
+        - ""
+        - "&ePrice: &6%price_placeholder%"
+        - "&7Stock: &4&lONLY %stock% LEFT!"
+    commands_on_click:
+      - "give %player% nether_star 1"
+
+  custom_model_item:
+    chance: 50.0
+    price: 150.0
+    stock: 10
+    display_item:
+      material: "DIAMOND_SWORD:1040"
+      name: "&cCustom Model Sword"
+      lore:
+        - "&fThis sword has a custom texture."
+        - ""
+        - "&ePrice: &6%price_placeholder%"
+        - "&7Stock: &e%stock% remaining"
+    commands_on_click:
+      - "give %player% diamond_sword{CustomModelData:1040} 1"
+
+  # --- EXAMPLE: Item with an item-based price ---
+  ancient_trident:
+    # The chance for this item to be selected from the pool.
+    chance: 1.0
+    # Global stock. Only 1 of these can be bought across the entire server per cycle.
+    stock: 1
+
+    # This section defines the price in items.
+    # Because this section exists, the normal 'price: ...' key will be ignored.
+    required_items:
+      - material: HEART_OF_THE_SEA
+        amount: 1
+      - material: NAUTILUS_SHELL
+        amount: 8
+      - material: DIAMOND_BLOCK
+        amount: 2
+
+    # This is what the player sees in the Night Market GUI.
+    display_item:
+      material: TRIDENT
+      name: '&b&lTrident of the Depths'
+      lore:
+        - '&7A powerful weapon from a forgotten era.'
+        - ''
+        - '&ePrice:'
+        - '&7- 1 Heart of the Sea'
+        - '&7- 8 Nautilus Shells'
+        - '&7- 2 Diamond Blocks'
+        - '&8Global Stock: %stock%'
+      # You can still add enchantments to the display item.
+      enchantments:
+        IMPALING: 5
+
+    # This command gives the actual item to the player upon successful purchase.
+    commands_on_click:
+      - 'give %player% trident{Enchantments:[{id:"minecraft:channeling",lvl:1s},{id:"minecraft:loyalty",lvl:3s},{id:"minecraft:impaling",lvl:5s}]} 1'
+
+  # --- EXAMPLE: Price with 2 items, one of which is custom ---
+  elytra_repair_kit:
+    chance: 3.0
+    stock: 5 # Personal stock (per player)
+
+    # This item costs 16 normal Phantom Membranes AND 1 custom Gold Nugget.
+    required_items:
+      # Item 1: A standard vanilla item.
+      - material: PHANTOM_MEMBRANE
+        amount: 16
+      # Item 2: A custom item that must have a specific name and lore to be valid.
+      - material: GOLD_NUGGET
+        amount: 1
+        name: '&6Ancient Coin'
+        lore:
+          - '&7A rare coin from a lost civilization.'
+
+    display_item:
+      material: DRAGON_BREATH
+      name: '&d&lWing Mender''s Essence'
+      lore:
+        - '&7A mystical item to fully repair'
+        - '&7a damaged Elytra.'
+        - ''
+        - '&ePrice:'
+        - '&7- 16 Phantom Membranes'
+        - '&7- 1 Ancient Coin'
+        - '&8Your Stock: %stock%'
+
+    commands_on_click:
+      # This is just an example command. You would replace this with your own.
+      - 'say %player% has purchased an Elytra Repair Kit!'
+
+  # --- GLOBAL ITEM CANDIDATE EXAMPLE 1 ---
+  elytra_global:
+    # This item is a candidate for a global slot because of the 'global' tag.
+    global: true
+    # This chance is compared against other GLOBAL items to see which one wins the slot.
+    chance: 10.0 # Rare
+    price: 1000.0
+    stock: 5
+    discount:
+      chance: 5.0    # A rare chance for a rare discount
+      percentage: 25.0 # 25% off
+    display_item:
+      material: "ELYTRA"
+      name: "&fWings of Freedom"
+      lore:
+        - "&7Soar through the skies."
+        - ""
+        - "&ePrice: &6%price_placeholder%"
+        - "&7Stock: &c%stock% remaining"
+      enchantments:
+        UNBREAKING: 2
+    commands_on_click:
+      - "give %player% elytra{Enchantments:[{id:\"minecraft:unbreaking\",lvl:2s}]} 1"
+
+  # --- GLOBAL ITEM CANDIDATE EXAMPLE 2 ---
+  nether_star_global:
+    global: true
+    chance: 5.0 # Very Rare - Half as likely to be chosen as the Elytra
+    price: 2000.0
+    stock: 2
+    display_item:
+      material: "NETHER_STAR"
+      name: "&5Nether Star"
+      lore:
+        - "&7Power from the depths of the Nether."
+        - ""
+        - "&ePrice: &6%price_placeholder%"
+        - "&7Stock: &4&lONLY %stock% LEFT!"
+    commands_on_click:
+      - "give %player% nether_star 1"

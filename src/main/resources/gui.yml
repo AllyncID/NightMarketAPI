@@ -1,0 +1,92 @@
+# ---------------------------------------------------------------- #
+#                   NightMarket GUI Configuration                  #
+# ---------------------------------------------------------------- #
+# Author: allync
+#
+# This file controls the visual layout and structure of the Night Market GUIs.
+#
+# - 'slots' are numbered 0-53 (top-left to bottom-right).
+# - You can use online tools to visualize inventory slot numbers.
+# - For colors, use '&' followed by a color code (e.g., &6 for gold).
+# ---------------------------------------------------------------- #
+
+# -- Main Night Market GUI --
+# The primary window that players see when they use /nightmarket.
+
+# The title displayed at the top of the GUI.
+title: "&8&nNight Market"
+# The number of rows in the GUI. Must be between 1 and 6.
+rows: 3
+
+# -- Market Item Slots --
+# Defines where the actual sale items will appear in the GUI.
+# Each entry represents a slot that will contain a random item from items.yml.
+market_item_slots:
+  # The key 'item1' is just a unique identifier. You can name it anything.
+  item1:
+    # The inventory slot where this item will be placed. (0-53)
+    inventory_slot: 10
+    # This MUST match a top-level key in your items.yml file.
+    # The plugin will pull a random item from this source key.
+    item_source_key_from_items_yml: "1"
+  item2:
+    inventory_slot: 12
+    item_source_key_from_items_yml: "2"
+  item3:
+    inventory_slot: 14
+    item_source_key_from_items_yml: "3"
+  item4:
+    inventory_slot: 16
+    item_source_key_from_items_yml: "4"
+
+# -- Decorative Items --
+# These are static items used for filling empty space or creating borders.
+# They have no function other than decoration.
+decorative_items:
+  gray_border_top:
+    material: "GRAY_STAINED_GLASS_PANE"
+    name: " " # A blank name is common for filler items.
+    # A list of slots this item will appear in.
+    slots: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+  gray_border_bottom:
+    material: "GRAY_STAINED_GLASS_PANE"
+    name: " "
+    slots: [18, 19, 20, 21, 22, 23, 24, 25, 26]
+
+
+# ---------------------------------------------------------------- #
+#                      Confirmation Menu                           #
+# ---------------------------------------------------------------- #
+# This menu appears after a player clicks an item to buy it, asking
+# them to confirm their purchase.
+
+confirmation_menu:
+  title: "&8&nConfirm Purchase"
+  rows: 3
+  # The slot where the item being purchased is displayed for review.
+  item_display_slot: 13
+
+  # The button to confirm the purchase.
+  confirm_button:
+    material: "LIME_STAINED_GLASS_PANE"
+    name: "&a&lConfirm Purchase"
+    lore:
+      - "&7Click to buy this item."
+    # Note: Use 'slots' as a list, even for a single slot.
+    slots: [11]
+    custom_model_data: 0 # Optional: For custom resource pack textures.
+
+  # The button to cancel the purchase.
+  cancel_button:
+    material: "RED_STAINED_GLASS_PANE"
+    name: "&c&lCancel"
+    lore:
+      - "&7Click to return to the Night Market."
+    slots: [15]
+    custom_model_data: 0
+
+  # The item used to fill all other empty slots in the confirmation menu.
+  fill_item:
+    material: "GRAY_STAINED_GLASS_PANE"
+    name: " "
+    slots: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]

@@ -1,0 +1,50 @@
+name: NightMarket
+version: '1.12'
+main: me.allync.nightmarket.NightMarket
+api-version: '1.20'
+author: Allync
+description: A Night Market plugin with multi-economy support and a configurable GUI.
+softdepend:
+  - PlaceholderAPI
+  - Vault
+  - PlayerPoints
+  - TokenManager
+  - CoinsEngine
+commands:
+  nightmarket:
+    description: Opens the Night Market GUI or manages the market.
+    usage: |
+      /nightmarket
+      /nightmarket reload
+      /nightmarket forceopen
+      /nightmarket forceclose
+      /nightmarket resetplayer <player>
+      /nightmarket resetall
+      /nightmarket give <player> <amount>
+    aliases: [nm, market]
+    permission: nightmarket.command.use
+permissions:
+  nightmarket.command.use:
+    description: Allows user to open the night market GUI.
+    default: true
+  nightmarket.command.give:
+    description: Allows user to give Reroll items.
+    default: op
+  nightmarket.reload:
+    description: Allows user to reload the plugin configuration.
+    default: op
+  nightmarket.shop.buy:
+    description: Allows user to buy items from the night market.
+    default: true
+  nightmarket.admin.forceopen:
+    description: Allows user to force open the night market.
+    default: op
+  nightmarket.admin.forceclose:
+    description: Allows user to force close the night market.
+    default: op
+  nightmarket.admin.resetplayer:
+    description: Allows user to reset a player's night market data for the current cycle.
+    default: op
+  nightmarket.admin.resetall:
+    description: Allows user to reset all players' night market data for the current cycle.
+    default: op

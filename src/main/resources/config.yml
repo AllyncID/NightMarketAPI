@@ -1,0 +1,255 @@
+# ---------------------------------------------------------------- #
+#                  NightMarket General Configuration               #
+# ---------------------------------------------------------------- #
+# Author: allync
+#
+# Welcome to the configuration file for NightMarket!
+# Here you can customize almost every aspect of the plugin.
+#
+# Placeholders:
+# %price% - The price of an item.
+# %time_remaining% - The time until the market opens or closes.
+# %player% - The name of a player.
+# %item_name% - The display name of an item.
+#
+# For colors, use '&' followed by a color code (e.g., &6 for gold, &l for bold).
+# ---------------------------------------------------------------- #
+
+# Do not change this value. It is used for automatic config updates.
+config-version: 10
+
+# -- Update Checker --
+# Set to true to enable automatic update checking on plugin startup.
+# The plugin will notify you in the console if a new version is available.
+check-updates: true
+
+# -- Market Settings --
+# NEW: Configure special market behaviors.
+market_settings:
+  # How many "global" items (marked with 'global: true' in items.yml) should be
+  # selected and shown to ALL players during a market cycle.
+  # If set to 0, no global items will be featured.
+  # If the number of available global items is less than this value, all of them will be shown.
+  number_of_global_items_to_show: 1
+
+# -- PlaceholderAPI Placeholders --
+# Customize the output for PlaceholderAPI placeholders.
+placeholders:
+  # Text to display for %nightmarket_open% when the market is open.
+  open_text: "YES"
+  # Text to display for %nightmarket_open% when the market is closed.
+  closed_text: "NO"
+
+# -- Economy Settings --
+economy:
+  # Set to false to disable all economy features.
+  # If false, all items will be free and no economy plugin is needed.
+  enabled: true
+  # Choose the economy plugin to use. This MUST be installed on your server.
+  # Valid options: VAULT, PLAYER_POINTS, TOKEN_MANAGER, COINSENGINE
+  # - VAULT: Requires Vault and an economy plugin like EssentialsX.
+  # - PLAYER_POINTS: Requires the PlayerPoints plugin.
+  # - TOKEN_MANAGER: Requires the TokenManager plugin.
+  # - COINSENGINE: Requires the CoinsEngine plugin.
+  provider: "VAULT"
+  # [Optional] Currency ID to use from CoinsEngine custom Currency.
+  # Default is "coins" if not set.
+  coinsengine_currency_id: "coins"
+
+# -- Stock System --
+# Choose how the item stock is handled.
+stock_system:
+  # GLOBAL: The 'stock' value in items.yml is server-wide. Each player can only buy each unique item ONCE. (Default behavior)
+  # PLAYER: The 'stock' value in items.yml is per-player. Each player can buy an item up to the stock limit, independent of others.
+  mode: "GLOBAL"
+
+# -- Global Item Displays --
+# These items are used as placeholders in the GUI.
+
+global_placeholder_item:
+  # This item is shown in a market slot before it has been revealed by the player.
+  material: ORANGE_STAINED_GLASS_PANE
+  name: '&6&lNight Market: &e&l????'
+  lore:
+    - '&8Mysterious Slot'
+    - ''
+    - ' &6| &eɪɴғᴏʀᴍᴀᴛɪᴏɴ'
+    - ' &6| &7A hidden offer awaits your discovery.'
+    - ' &6| &eClick here to unveil the item!'
+    - ''
+    - '&e&lCLICK TO REVEAL'
+    - '&eReveal this mystery item'
+
+global_purchased_item_display:
+  # This item is shown after a player has purchased the item in that slot.
+  material: RED_STAINED_GLASS_PANE
+  name: '&c&lSOLD OUT'
+  lore:
+    - '&8Item Status'
+    - ''
+    - ' &6| &eɪɴғᴏʀᴍᴀᴛɪᴏɴ'
+    - ' &6| &7You have already purchased this item'
+    - ' &6| &7during this current market cycle.'
+    - ''
+    - '&c&lALREADY PURCHASED'
+    - '&cWait for new item..'
+
+global_out_of_stock_item_display:
+  # This item is displayed when the global stock of an item has run out.
+  material: GRAY_STAINED_GLASS_PANE
+  name: '&7&lOUT OF STOCK'
+  lore:
+    - '&8Item Status'
+    - ''
+    - ' &6| &eɪɴғᴏʀᴍᴀᴛɪᴏɴ'
+    - ' &6| &7This item has been sold out in the market'
+    - ' &6| &7and is no longer available to anyone.'
+    - ''
+    - '&7&lSOLD OUT'
+    - '&7Wait for the next market cycle...'
+
+
+# -- Market Schedule --
+# Controls the automatic opening and closing cycle of the market.
+market_schedule:
+  # Duration in SECONDS that the market stays open. (Default: 604800 = 7 days)
+  open_duration: 604800
+  # Duration in SECONDS that the market stays closed. (Default: 259200 = 3 days)
+  close_duration: 259200
+
+  # Broadcast message sent to all players when the market opens automatically.
+  market_open_broadcast:
+    - ' '
+    - ' &6&lNight Market: &e&lNow Open!'
+    - ' &fThe Night Market is now &aopen&f! Explore unique items and special offers! &7(Use /nightmarket)'
+    - ' '
+  # Broadcast message sent to all players when the market closes automatically.
+  market_close_broadcast:
+    - ' '
+    - ' &6&lNight Market: &e&lNow Closed!'
+    - ' &fThe Night Market is now &cclosed&f! See you next time for more treasures!'
+    - ' '
+
+  # Broadcast message when an admin uses /nightmarket forceopen.
+  force_open_message:
+    - ' '
+    - ' &6&lNight Market: &e&lNow Open!'
+    - ' &fThe Night Market is now &aopen&f by an admin! Explore unique items and special offers! &7(Use /nightmarket)'
+    - ' '
+  # Broadcast message when an admin uses /nightmarket forceclose.
+  force_close_message:
+    - ' '
+    - ' &6&lNight Market: &e&lNow Closed!'
+    - ' &fThe Night Market is now &cclosed&f by an admin! See you next time for more treasures!'
+    - ' '
+
+  # -- Market Announcements --
+  # Configure messages to be broadcast before the market opens or closes.
+  # 'time_before' is in seconds, relative to the market opening/closing time.
+  announcements:
+    before_open:
+      - time_before: 3600 # 1 hour before open
+        message:
+          - '&6[NightMarket] &eThe Night Market will open in 1 hour! Get ready for new deals!'
+      - time_before: 60 # 1 minute before open
+        message:
+          - '&6[NightMarket] &eThe Night Market is opening in 1 minute! Don''t miss out!'
+    before_close:
+      - time_before: 86400 # 24 hours before close
+        message:
+          - '&6[NightMarket] &cThe Night Market will close in 24 hours! Last chance to grab your items!'
+      - time_before: 600 # 10 minutes before close
+        message:
+          - '&6[NightMarket] &cThe Night Market is closing in 10 minutes! Make your final purchases!'
+
+# -- Sound Effects --
+# Customize the sounds played for various actions.
+# A list of valid sounds can be found here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
+# Volume and Pitch are decimal values (e.g., 1.0).
+sounds:
+  item_purchase:
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 1.0
+    pitch: 1.2
+  item_reveal:
+    sound: BLOCK_NOTE_BLOCK_PLING
+    volume: 1.0
+    pitch: 1.5
+  market_closed:
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 1.0
+    pitch: 0.8
+  market_open:
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 1.0
+    pitch: 0.8
+  gui_open:
+    sound: BLOCK_ENDER_CHEST_OPEN
+    volume: 0.8
+    pitch: 1.0
+  permission_denied:
+    sound: BLOCK_NOTE_BLOCK_BASS
+    volume: 1.0
+    pitch: 0.8
+
+# -- Plugin Messages --
+# Customize all user-facing messages from commands and interactions.
+messages:
+  # Generic message for when a player lacks permission for a command.
+  no_permission: '&cYou do not have permission to use this command.'
+  # Message when a player without permission tries to open the market GUI.
+  no_permission_open: '&cYou do not have permission to open the Night Market.'
+  # Message sent when the configuration files are successfully reloaded.
+  reload_success: '&aNightMarket configurations and items have been reloaded!'
+  # Message for a successful /nightmarket forceopen command.
+  force_open_success: '&aNight Market has been forcefully opened.'
+  # Message for a successful /nightmarket forceclose command.
+  force_close_success: '&aNight Market has been forcefully closed.'
+  # Message sent when /nightmarket resetplayer is used incorrectly.
+  reset_player_usage: '&cUsage: /nightmarket resetplayer <player_name>'
+  # Message when the target of /resetplayer is not found. Use %player%.
+  player_not_found: '&cPlayer ''%player%'' not found.'
+  # Confirmation message for the admin after resetting a player's data. Use %player%.
+  reset_player_success: '&aNight Market data for player %player% has been reset for the current cycle.'
+  # Message sent to the target player when their data is reset by an admin.
+  reset_player_notification: '&eYour Night Market data has been reset by an admin.'
+  # Confirmation message for the admin after resetting all players' data.
+  reset_all_success: '&aNight Market data for ALL players has been reset for the current cycle.'
+  # Broadcast message sent to the server when all player data is reset.
+  reset_all_broadcast: '&aAll player data has been reset for the current market cycle by an admin.'
+  # Message when a player tries to open the market but it's closed. Use %time_remaining%.
+  market_closed:
+    - ' '
+    - ' &6&lInfo: &e&lNight Market'
+    - ' &fThe Night Market is currently closed!'
+    - ' '
+    - ' &fNext open in: &e%time_remaining%'
+    - ''
+  # Message when a player doesn't have enough money or items. Use %price%.
+  not_enough_money: '&cYou don''t have enough money to buy this!'
+  not_enough_items: '&cYou don''t have enough items to buy this!.'
+  # Message on successful purchase. Use %price% and %item_name%.
+  item_successfully_purchased: '&aYou have purchased &e%item_name% &afor &6%price%&a.'
+  # Message when trying to buy an already-purchased item.
+  item_already_purchased: '&eYou have already purchased this item.'
+  # Message for a rare case where the GUI and data are out of sync.
+  item_already_purchased_desync: '&cYou''ve already bought this! (Error: Desync)'
+  # Usage message for the /nightmarket give command.
+  give_usage: '&cUsage: /nightmarket give <player> <amount>'
+  # Sent to the command issuer on success. Use %amount% and %player%.
+  give_success: '&aSuccessfully gave %amount% Reroll Item(s) to %player%.'
+  # Sent to the player who receives the item. Use %amount%.
+  receive_reroll_item: '&aYou have received %amount% Reroll Item(s).'
+  # Sent when the give command is used but the reroll item is disabled in items.yml.
+  reroll_item_disabled: '&cThe Reroll Item feature is currently disabled.'
+  # Sent when the amount is not a valid positive number.
+  invalid_amount: '&cInvalid amount specified. Please enter a positive number.'
+  # Message when a player tries to buy an item that is globally sold out.
+  item_sold_out: '&cThis item is sold out for everyone!'
+  update_notify: '&e[NightMarket] A new version is available! (v%latest_version%) You are on v%current_version%. Download from: &6https://www.spigotmc.org/resources/127886/'
+  permission_denied_lore:
+    - ''
+    - '&c&lACCESS DENIED'
+    - '&cYou do not have permission'
+    - '&cto purchase this item.'
+
