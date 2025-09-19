@@ -2,6 +2,7 @@ package me.allync.nightmarket.api;
 
 import me.allync.nightmarket.NightMarket;
 import me.allync.nightmarket.economy.EconomyProvider;
+import me.allync.nightmarket.manager.MarketManager;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,7 +10,7 @@ import java.util.logging.Level;
 
 /**
  * Public API class for NightMarket.
- * Allows other plugins to register a custom economy provider.
+ * Allows other plugins to register a custom economy provider and check market status.
  */
 public class APIManager {
 
@@ -71,6 +72,38 @@ public class APIManager {
     }
 
     /**
+     * Checks if the Night Market is currently open.
+     *
+     * @return true if the market is open, false otherwise.
+     */
+    public static boolean isMarketOpen() {
+        MarketManager marketManager = NightMarket.getInstance().getMarketManager();
+        return marketManager != null && marketManager.isMarketOpen();
+    }
+
+    /**
+     * Gets the time remaining in the current market cycle in seconds.
+     *
+     * @return The number of seconds remaining until the market's state changes.
+     */
+    public static long getTimeRemainingSeconds() {
+        MarketManager marketManager = NightMarket.getInstance().getMarketManager();
+        return marketManager != null ? marketManager.getTimeRemainingSeconds() : 0L;
+    }
+
+    /**
+     * Gets a formatted string representing the time remaining in the current cycle.
+     * Example: "7d 12h 30m 15s"
+     *
+     * @return The formatted time string.
+     */
+    public static String getFormattedTimeRemaining() {
+        MarketManager marketManager = NightMarket.getInstance().getMarketManager();
+        return marketManager != null ? marketManager.getFormattedTimeRemaining() : "N/A";
+    }
+
+
+    /**
      * Checks if a provider name is one of the built-in providers.
      */
     private static boolean isBuiltInProvider(String name) {
@@ -87,4 +120,3 @@ public class APIManager {
         }
     }
 }
-

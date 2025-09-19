@@ -20,7 +20,8 @@ public class EconomyManager {
     public EconomyManager(NightMarket plugin) {
         this.plugin = plugin;
         this.itemEconomyProvider = new ItemEconomyProvider(plugin);
-        setupEconomy();
+        // The call to setupEconomy() has been moved to the main plugin's onEnable,
+        // to ensure it runs after all other plugins have loaded.
     }
 
     public void setupEconomy() {

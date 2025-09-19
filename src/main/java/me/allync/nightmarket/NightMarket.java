@@ -83,9 +83,14 @@ public final class NightMarket extends JavaPlugin {
 
         this.marketManager = new MarketManager(this);
         this.nightMarketGUI = new NightMarketGUI(this);
+        this.economyManager = new EconomyManager(this); // EconomyManager is created but not yet hooked.
 
-        getLogger().info("Initializing Economy Manager...");
-        this.economyManager = new EconomyManager(this);
+        // Defer the economy setup to ensure all other plugins (including custom economy providers) have loaded.
+        // This runs on the next server tick after all plugins have completed their onEnable() sequence.
+        getServer().getScheduler().runTask(this, () -> {
+            getLogger().info("Initializing Economy Manager...");
+            this.economyManager.setupEconomy();
+        });
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new NightMarketExpansion(this).register();

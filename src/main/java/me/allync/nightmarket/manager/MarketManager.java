@@ -1,6 +1,8 @@
 package me.allync.nightmarket.manager;
 
 import me.allync.nightmarket.NightMarket;
+import me.allync.nightmarket.api.events.MarketCloseEvent;
+import me.allync.nightmarket.api.events.MarketOpenEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -313,6 +315,7 @@ public class MarketManager {
         selectGlobalItemsForCycle();
         plugin.getLogger().info("Night Market (Scheduled) is now OPEN. Player data and global stock reset for this cycle.");
         saveMarketState();
+        Bukkit.getPluginManager().callEvent(new MarketOpenEvent(false)); // Call API event
     }
 
     private void closeMarketScheduled() {
@@ -331,6 +334,7 @@ public class MarketManager {
 
         plugin.getLogger().info("Night Market (Scheduled) is now CLOSED.");
         saveMarketState();
+        Bukkit.getPluginManager().callEvent(new MarketCloseEvent(false)); // Call API event
     }
 
     public void forceOpenMarket() {
@@ -357,6 +361,7 @@ public class MarketManager {
         if (marketTask != null) marketTask.cancel();
         startMarketCycle();
         scheduleAnnouncements();
+        Bukkit.getPluginManager().callEvent(new MarketOpenEvent(true)); // Call API event
     }
 
     public void forceCloseMarket() {
@@ -380,6 +385,7 @@ public class MarketManager {
         if (marketTask != null) marketTask.cancel();
         startMarketCycle();
         scheduleAnnouncements();
+        Bukkit.getPluginManager().callEvent(new MarketCloseEvent(true)); // Call API event
     }
 
     public void resetPlayerData(UUID playerUUID) {
